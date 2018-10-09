@@ -14,6 +14,9 @@ repositories {
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
+    compile(kotlin("script-runtime"))
+
+    compile("javax.inject:javax.inject:1")
 }
 
 tasks.withType<KotlinCompile> {
