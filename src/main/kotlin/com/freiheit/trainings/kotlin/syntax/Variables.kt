@@ -1,29 +1,40 @@
 package com.freiheit.trainings.kotlin.syntax
 
 import java.lang.Exception
+import java.lang.IllegalStateException
 import java.lang.NullPointerException
 
-// (DO) val is immutable
+/************ val, var and const ***************************/
+
+/**
+ * @DO: Use val whenever possible, because val is immutable.
+ */
 fun valIsImmutable() {
     println("val is immutable...")
     val a = 5
 // Does not work
 // a = 5
-
     val immuList = listOf("hello", "kotlin")
-    print(immuList)
-    val immuList1 = immuList.plus("I am mutable")
-    println(immuList1)
+    println("immuList $immuList")
+    val immuList1 = immuList.plus("I am immutable")
+    println("immuList1 $immuList1")
+    val immuList2 = immuList + ("I am still immutable")
+    println("immuList2 $immuList2")
 }
 
-// vals and vars can be assigned outside of functions
+/**
+ * @DO: Initialize val globally if they are global.
+ * @DONT: Global variables, because somebody may change it!
+ * Notice: The scope is the current file, i.e., they can be imported via file name.
+ */
 val immuList = listOf("hello", "kotlin")
-val varString = "hello"
-
+var varString = "hello"
 // does not work
 //varString = "world"
 
-// but you can only reassign vars in functions
+/**
+ * Notice: you can only reassign vars in functions
+ */
 fun reassign() {
     println("var is mutable...")
     var b = 3
@@ -31,14 +42,31 @@ fun reassign() {
     println(b == 5)
 }
 
+/**
+ * @DO: Even better, make global values constant!
+ */
 const val MY_CONST = "MY_CONST_VALUE"
 
+/**
+ * Notice: const is not supported in functions.
+ */
 fun constDoesNotWorkLocal() {
     // const does not work local.
 //    const val a = "test"
 }
 
-// Kotlin infers types
+/**
+ * @DO: Use objects to group constants.
+ * Notice: const is supported by objects.
+ */
+object Constants {
+    const val MY_GLOBAL_CONSTANT = "tea time"
+}
+
+
+/************ type inference and nulls ***************************/
+/** Notice:  Kotlin infers types */
+
 val stringWithoutTyp = "kotlinKnowsItIsAString"
 val listWithoutType = listOf("A", "B")
 
@@ -48,12 +76,15 @@ fun typeInferenceWillFail() {
     //listWithoutTypeVar = listOf(1, 2)
 }
 
-
 val listWithType = listOf<String>("A", "B")
-// unlike Java, the type declaration comes after the variable name
+/**
+ * NOTICE (unlike Java): The type declaration comes after the variable name.
+ */
 val listWithMoreTypes: List<String> = listOf<String>("A", "B")
 
-// Do this if used in APIs!
+/**
+ * @DO: Make type explicit if the variable is exposed, e.g., API.
+ */
 val stringWithTyp: String = "kotlinKnowsItIsAString"
 
 val nullStringInferred = null
@@ -62,18 +93,76 @@ val nullString: String? = null
 // does not work
 // val nonNullString : String = null
 
+/**
+ * NOTICE: You must always define the return type of functions, unless.
+ */
+fun returnSomething(): String {
+    return "something"
+}
 
-// Kotlin allows default values and supports named parameters <3
-// DON'T: If you define defaults make sure they are reasonable. Likely, the following is a bad example:
+/**
+ * Your function can be a single expression.
+ */
+fun returnSomethingSingleExpression() = "something"
+
+// DOES NOT WORK!
+//fun returnSomething() {
+//    return "something"
+//}
+
+/**
+ * Kotlin has [Nothing] as type.
+ */
+fun neverReturnsAndAlwaysThrows(): Nothing {
+    throw IllegalStateException()
+}
+
+fun neverReturnsAndAlwaysThrowsWithVoid() {
+    throw IllegalStateException()
+}
+
+/**
+ * Notice...
+ */
+fun nothingIsHandyForLambdas(v: String, f: (a: String) -> Nothing) {
+
+}
+
+/**
+ * Kotlin has [Any] as type.
+ * @DONT: Avoid [Any] as return type ;)
+ */
+fun returnsAny(): Any {
+    return 1
+}
+
+/************ more nulls, named parameters and default values ***************************/
+
+/**
+ * Kotlin has default values for functions and ctors and supports named parameters <3.
+ * Make sure you do not use default values everywhere. It should be always clear why code behaves as called.
+ * Good examples are:
+ * - init lists as empty (to avoid null lists)
+ * - init config values, such as port = 8080
+ */
+/**
+ * @DONT: Define defaults, because you can. It get's hard to understand why something is working out of the box.
+ */
 // class PersonDao()
 // class PersonService(personDao : PersonDao = PersonDao())
 
-// to initialize the list employees as emptyList() is a DO. The list will be never null!
-// DON'T: employess: List<String>? or even List<String?>?
+/**
+ * @DO: initialize the list employees as emptyList(). The list will be never null!
+ * @DONT: employess: List<String>? or even List<String?>?
+ */
 class Dept(val name: String, val dept: Dept?, val employees: List<String> = emptyList())
 
+// needed below...
 class SearchParameter(val title: String?, val dept: Dept?)
 
+/**
+ * Put this example here, because I needed defaults, which is more related to functions.
+ */
 fun workingWithNulls() {
     val nullString: String? = null
 
@@ -84,7 +173,7 @@ fun workingWithNulls() {
             println("length > 0")
         }
     } catch (e: Exception) {
-        // Kotlin has no multi catch
+        // Kotlin has no multi catch (may change with 1.3)
         when (e) {
             is NullPointerException -> println("NPE: \n ${e.message}")
             is IllegalArgumentException -> println("IAE: \n ${e.message}")
@@ -107,6 +196,12 @@ fun workingWithNulls() {
 
     println("name: $name, name2: $name2")
 
+    // Use bang bang if you want to throw an NPE
+    try {
+        println("${nullString!!.isEmpty()} - isEmpty is an extension: CharSequence.isEmpty()")
+    } catch (e: NullPointerException) {
+        e.printStackTrace()
+    }
     // systemValue is of type String! (platform type).
     // type is defined as String! := (String? or String) (wtf?!)
     val systemValue = System.getProperty("KOTLIN_IS_GREAT")
