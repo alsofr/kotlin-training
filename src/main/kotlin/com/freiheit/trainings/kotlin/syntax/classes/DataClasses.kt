@@ -2,7 +2,8 @@ package com.freiheit.trainings.kotlin.syntax.classes
 
 
 /**
- * DATA CLASSES:
+ * Data classes.
+ * - generated code for equals, hash, toString.
  * @DO: Use them for data!
  * @DO: Do not simply rely on equals etc. even though it is generated code. Make sure you still test it.
  */

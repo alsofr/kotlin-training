@@ -1,5 +1,8 @@
 package com.freiheit.trainings.kotlin.syntax.classes
 
+class ASimpleClass(val myName: String)
+class ASimpleClassWithPrivateFields(private val myPrivateName: String)
+
 // a class with a private constructor
 class MyClassWithAPrivateCtor private constructor(val port: Int = 8080)
 
