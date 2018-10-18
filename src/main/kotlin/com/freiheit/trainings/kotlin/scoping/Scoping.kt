@@ -81,8 +81,8 @@ class Logic(private val service: Service) {
             - returns result
          */
 
-        val cartWithPrices = service.run {
-            fetchPrices(create())
+        val reversedCartId = Cart().run {
+            cartId.reversed()
         }
 
         /* .apply {}
@@ -90,16 +90,18 @@ class Logic(private val service: Service) {
             - returns operand
             - handy for assignments
          */
-        Cart().apply {
+        val cartWithData = Cart().apply {
             items = mapOf("id" to Cart.Item("id", 42, null))
             price = Cart.Price("EUR", 69.toBigDecimal())
         }
 
-        /* with {}
+        /* with(context) {}
             - similar to .run {}
             - global function instead of an extension
             - not null safe
-            - only "semantic" difference
+            - only "semantic" difference:
+                - .run {} maps an object into another object
+                - with() {} uses an object to execute operations and return
          */
         with(service) {
             fetchPrices(create())
@@ -125,6 +127,19 @@ class Logic(private val service: Service) {
             .also { service.track(it) }
     }
 
+    /**
+     * @DONT Nest scoping functions. If something has to be used multiple times independently,
+     *       just declare an old-school variable.
+     */
+    fun processNestedScope(id: String, quantity: Int) {
+        service.load()
+            .let { it ?: service.create() }
+            .let { cart ->
+                service.addItem(cart, id, quantity)
+                    .let { service.fetchArticles(it) }
+                    .let { service.fetchPrices(cart) }
+            }
+    }
 
     /**
      * @DO Use the right scoping function for the right job

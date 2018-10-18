@@ -16,7 +16,7 @@ dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile(kotlin("script-runtime"))
 
-    compile("javax.inject:javax.inject:1")
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
 }
 
 tasks.withType<KotlinCompile> {

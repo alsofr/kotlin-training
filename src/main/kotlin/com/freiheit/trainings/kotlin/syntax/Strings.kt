@@ -17,7 +17,7 @@ object Bar {
  * @DO Use substitution instead of concatenation or String.format()
  *
  * Notice: Unlike JavaScript, no special quotes are requires. The usual double-quote supports substitution.
- *         Single quotes are used to define special chars in names and to distinguish keywords from colliding function names.
+ *         Back quotes are used to define special chars in names and to distinguish keywords from colliding function names.
  */
 private const val substitution = "$foo bar"
 // use curlies, if there is no whitespace between the variable name and the rest of the string
