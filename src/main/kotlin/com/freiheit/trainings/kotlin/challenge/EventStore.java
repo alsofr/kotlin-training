@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.freiheit.trainings.kotlin.challenge.fixed.Event;
-import com.freiheit.trainings.kotlin.challenge.fixed.IStore;
-import com.freiheit.trainings.kotlin.challenge.fixed.Store;
+import com.freiheit.trainings.kotlin.challenge.approved.Event;
+import com.freiheit.trainings.kotlin.challenge.approved.IStore;
+import com.freiheit.trainings.kotlin.challenge.approved.Store;
 
 public class EventStore implements IStore<Event> {
     private final Store<Event> store;
@@ -21,5 +21,9 @@ public class EventStore implements IStore<Event> {
 
     @Override public void save( @NotNull String id, Event event ) {
         store.save( id, event );
+    }
+
+    @Override public void drop() {
+        store.drop();
     }
 }

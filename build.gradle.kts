@@ -1,8 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-
-val junitPlatformVersion = "1.1.0"
-val spekVersion = "1.1.5"
 
 plugins {
     kotlin("jvm") version "1.3.0-rc-146"
@@ -14,42 +10,26 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://dl.bintray.com/kotlin/kotlin-eap")
+    maven("https://dl.bintray.com/spekframework/spek-dev")
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
+    compile(kotlin("stdlib-jdk8", version = "1.3.0-rc-146"))
+    compile(kotlin("reflect", version = "1.3.0-rc-146"))
     compile(kotlin("script-runtime"))
+    testCompile(kotlin("test", version = "1.3.0-rc-146"))
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
-
-    testImplementation("org.jetbrains.spek:spek-api:$spekVersion") {
-        exclude(group = "org.jetbrains.kotlin")
-    }
-
-    testRuntimeOnly("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
-        exclude(group = "org.jetbrains.kotlin")
-        exclude(group = "org.junit.platform")
-    }
-
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitPlatformVersion") {
-        because("Needed to run tests IDEs that bundle an older version")
-    }
-    testImplementation(gradleTestKit())
-
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    testCompile("org.jetbrains.spek:spek-api:1.1.5")
+    testCompile("org.jetbrains.spek:spek-subject-extension:1.1.5")
+    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:1.1.5")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-buildscript {
-    dependencies {
-        classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0")
-    }
-}
-
 tasks.withType<Test> {
-    useJUnitPlatform {
-        includeEngines("spek")
-    }
+    useJUnitPlatform{includeEngines("spek")}
 }
