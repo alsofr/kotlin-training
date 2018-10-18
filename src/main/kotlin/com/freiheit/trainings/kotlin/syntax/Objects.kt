@@ -3,8 +3,10 @@ package com.freiheit.trainings.kotlin.syntax
 
 /***
  * Objects are, like Scala, singletons.
- * @DO: Use them for Singletons!
  * Notice: There is not ctor, but init (which is rather ...)
+ *
+ * @DO: Use them for Singletons!
+ *
  */
 object MySingletonService {
     // port is var and nullable :(

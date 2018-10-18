@@ -9,11 +9,14 @@ val anonMike = AnonymousPerson("mike")
 // does not work unless you make name a val in the ctor
 //val nameMike = mike.name;
 
+/**
+ * @DO: Make class fields immutable.
+ */
 class ImmutablePerson(val name: String)
 val mike = ImmutablePerson("mike")
 
 /**
- * There are no getters and setter in Kotlin.
+ * Notice: There are no getters and setter in Kotlin.
  */
 val oldName = mike.name
 
