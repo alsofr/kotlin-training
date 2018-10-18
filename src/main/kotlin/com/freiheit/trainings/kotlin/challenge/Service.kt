@@ -47,23 +47,23 @@ object Service {
         TODO()
     }
 
-    fun getCart(cartId: String): Cart? {
+    fun getCart(cartId: String): ActiveCart? {
         TODO()
     }
 
-    fun getCart(cartId: String, version: Int): Cart? {
+    fun getCart(cartId: String, version: Int): ActiveCart? {
         TODO()
     }
 
-    fun addItem(cartId: String, itemId: String, quantity: Int): Cart? {
+    fun addItem(cartId: String, itemId: String, quantity: Int): ActiveCart? {
         TODO()
     }
 
-    fun deleteItem(cartId: String, itemId: String): Cart? {
+    fun deleteItem(cartId: String, itemId: String): ActiveCart? {
         TODO()
     }
 
-    fun deleteCart(cartId: String): Boolean {
+    fun deleteCart(cartId: String) {
         TODO()
     }
 }

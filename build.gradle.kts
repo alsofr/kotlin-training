@@ -14,20 +14,17 @@ repositories {
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
+    compile(kotlin("stdlib-jdk8", version = "1.3.0-rc-146"))
+    compile(kotlin("reflect", version = "1.3.0-rc-146"))
     compile(kotlin("script-runtime"))
-    testCompile(kotlin("test"))
+    testCompile(kotlin("test", version = "1.3.0-rc-146"))
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
 
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.0-alpha.2") {
-        exclude(group = "org.jetbrains.kotlin")
-    }
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.0-alpha.2") {
-        exclude(group = "org.junit.platform")
-        exclude(group = "org.jetbrains.kotlin")
-    }
+    testCompile("org.jetbrains.spek:spek-api:1.1.5")
+    testCompile("org.jetbrains.spek:spek-subject-extension:1.1.5")
+    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:1.1.5")
 }
 
 tasks.withType<KotlinCompile> {
@@ -35,5 +32,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform{includeEngines("spek2")}
+    useJUnitPlatform{includeEngines("spek")}
 }

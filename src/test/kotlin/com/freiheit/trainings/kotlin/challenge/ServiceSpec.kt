@@ -1,19 +1,18 @@
 package com.freiheit.trainings.kotlin.challenge
 
-import org.junit.jupiter.api.assertThrows
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
 import java.math.BigDecimal
 import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 object ServiceSpec : Spek({
     describe("Service") {
         val service by memoized { Service }
 
-        beforeEach { service.db.drop() }
+        beforeEachTest { service.db.drop() }
 
         context("creation") {
             it("creates a cart") {
@@ -23,7 +22,7 @@ object ServiceSpec : Spek({
                 assertNotNull(cart)
                 assertEquals(cartId, cart.cartId)
                 assertTrue { cart.items.isEmpty() }
-                assertEquals(BigDecimal.ZERO, cart.price.amount)
+                assertEquals(BigDecimal.ZERO, cart.price?.amount)
             }
         }
 
@@ -39,7 +38,7 @@ object ServiceSpec : Spek({
                 assertNotNull(item)
                 assertEquals("1", item.itemId)
                 assertEquals(69, item.quantity)
-                assertEquals(item.quantity.toBigDecimal(), item.price.amount)
+                assertEquals(item.quantity.toBigDecimal(), item.price?.amount)
             }
 
             it("changes the quantity") {
@@ -53,15 +52,8 @@ object ServiceSpec : Spek({
                 assertEquals(42, cart.items["1"]?.quantity)
             }
 
-            it("throws if no cart exists") {
-                service.createCart()
-                assertThrows<IllegalArgumentException> {
-                    service.addItem("${UUID.randomUUID()}", "1", 5)
-                }
-            }
-
             it("throws if invalid quantity") {
-                assertThrows<IllegalArgumentException> {
+                assertFailsWith<IllegalArgumentException> {
                     service.createCart()
                         .let { service.addItem(it, "1", -1) }
                 }
@@ -76,22 +68,7 @@ object ServiceSpec : Spek({
 
                 assertNotNull(cart)
                 assertTrue { cart.items.isEmpty() }
-                assertEquals(BigDecimal.ZERO, cart.price.amount)
-            }
-
-
-            it("throws if no cart exists") {
-                service.createCart()
-                assertThrows<IllegalArgumentException> {
-                    service.deleteItem("${UUID.randomUUID()}", "1")
-                }
-            }
-
-            it("throws if no item exists") {
-                assertThrows<IllegalArgumentException> {
-                    service.createCart()
-                        .let { service.deleteItem(it, "1") }
-                }
+                assertEquals(BigDecimal.ZERO, cart.price?.amount)
             }
         }
 
@@ -99,14 +76,7 @@ object ServiceSpec : Spek({
             it("deletes the cart") {
                 val cartId = service.createCart()
                 service.deleteCart(cartId)
-                assertThrows<IllegalArgumentException> { service.getCart(cartId) }
-            }
-
-            it("throws if no cart exists") {
-                service.createCart()
-                assertThrows<IllegalArgumentException> {
-                    service.deleteCart("${UUID.randomUUID()}")
-                }
+                assertNull(service.getCart(cartId))
             }
         }
 
