@@ -19,6 +19,7 @@ fun multiBranch() {
  * Using [when] you can return values
  */
 val result = when {
+    //@DONT: if this is a long running operation, because result is a value.
     Random.nextInt() % 69 == 0 -> "We got lucky!"
     else -> "Try again :C"
 }

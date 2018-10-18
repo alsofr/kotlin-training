@@ -2,6 +2,9 @@ package com.freiheit.trainings.kotlin.collections
 
 import kotlin.system.measureTimeMillis
 
+/**
+ * @DO: Use Sequences.
+ */
 //taken from https://blog.kotlin-academy.com/effective-kotlin-use-sequence-for-bigger-collections-with-more-than-one-processing-step-649a15bb4bf
 fun main(args: Array<String>) {
     val seq = sequenceOf(1, 2, 3)
@@ -29,13 +32,13 @@ fun main(args: Array<String>) {
     for (i in 1..30) {
         exTimeSeq += processSequence()
     }
-    println("Execution time sequence ${exTimeSeq/30}")
+    println("Execution time sequence ${exTimeSeq / 30}")
 
     var exTimeList: Long = 0
     for (i in 1..30) {
         exTimeList += processList()
     }
-    println("Execution time list ${exTimeList/30}")
+    println("Execution time list ${exTimeList / 30}")
 }
 
 fun processSequence(): Long {
