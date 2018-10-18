@@ -1,4 +1,4 @@
-package com.freiheit.trainings.kotlin.challenge.fixed
+package com.freiheit.trainings.kotlin.challenge.approved
 
 sealed class Event {
     abstract val cartId: String

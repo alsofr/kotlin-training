@@ -1,4 +1,4 @@
-package com.freiheit.trainings.kotlin.challenge.fixed
+package com.freiheit.trainings.kotlin.challenge.approved
 
 import com.freiheit.trainings.kotlin.challenge.Cart
 

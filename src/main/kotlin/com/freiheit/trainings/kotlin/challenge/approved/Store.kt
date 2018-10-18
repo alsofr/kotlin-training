@@ -1,4 +1,4 @@
-package com.freiheit.trainings.kotlin.challenge.fixed
+package com.freiheit.trainings.kotlin.challenge.approved
 
 interface IStore<V> {
     fun load(key: String): List<V>

@@ -1,6 +1,6 @@
 package com.freiheit.trainings.kotlin.challenge
 
-import com.freiheit.trainings.kotlin.challenge.fixed.PricesClient
+import com.freiheit.trainings.kotlin.challenge.approved.PricesClient
 
 /**
  * Welcome to the fancy new Shopping Cart Service!
@@ -33,15 +33,15 @@ import com.freiheit.trainings.kotlin.challenge.fixed.PricesClient
  *
  *
  * Restrictions:
- * 1. The code in the fixed package was already approved by the PO and shall not be changed.
+ * 1. The code in the approved package was already accepted by the PO and shall not be changed.
  * 2. Due to the security policy, no external dependencies can be used.
  *
  * P.S. Any bug induced costs are directly charged with your salary.
  */
 
 object Service {
-    val db = EventStore()
     private val pricesClient = PricesClient
+    val db = EventStore()
 
     fun createCart(): String {
         TODO()
