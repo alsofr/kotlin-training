@@ -1,5 +1,8 @@
-package com.freiheit.trainings.kotlin.syntax.classes
+package com.freiheit.trainings.kotlin.syntax
 
+/**
+ * Notice: This is a class in Kotlin (see InheritanceAndInterfaces.kt).
+ */
 class AnonymousPerson(name: String)
 
 val anonMike = AnonymousPerson("mike")
@@ -14,19 +17,25 @@ val mike = ImmutablePerson("mike")
  */
 val oldName = mike.name
 
-// does not work, because name is a val
-//p.name = "$oldName + updated"
+fun reassignNameVal() {
+//    Does not work
+//    mike.name = 'newMike'
+}
 
-// name has to be a var in order to reassign it.
+/**
+ * Notice: name has to be a var in order to reassign it.
+ *
+ * @DONT: do not use vars as class attributes.
+ */
 class MutablePerson(var name: String)
 val mutableMike = MutablePerson("mutable mike")
 
-fun reassignName(): MutablePerson {
+fun reassignNameVar(): MutablePerson {
     val oldMutableName = mutableMike.name
     mutableMike.name = "$oldMutableName + updated"
     return mutableMike
 }
 
 fun main(args: Array<String>) {
-    println("reassignName to Mike: ${reassignName().name}")
+    println("reassignName to Mike: ${reassignNameVar().name}")
 }

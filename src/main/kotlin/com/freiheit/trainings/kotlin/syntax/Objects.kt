@@ -1,17 +1,19 @@
-package com.freiheit.trainings.kotlin.syntax.classes
+package com.freiheit.trainings.kotlin.syntax
 
 
 /***
  * Objects are, like Scala, singletons.
  * @DO: Use them for Singletons!
- * Notice: There is not ctor, but init.
+ * Notice: There is not ctor, but init (which is rather ...)
  */
 object MySingletonService {
-    var port: Int? = null
+    // port is var and nullable :(
+//    var port: Int? = null
+    val port : Int
 
     init {
         // Try to avoid this situation. Although init is guaranteed to run always a first instruction,
-        // you still need to check for null.
+        // you still need to check for null. (see main below)
         port = 8080
     }
 
@@ -21,7 +23,7 @@ object MySingletonService {
 }
 
 /**
- * Companion Objects
+ * Companion Objects. (see main below)
  */
 open class MyService(val port: Int = 8080) {
     companion object {
@@ -38,8 +40,8 @@ open class MyService(val port: Int = 8080) {
  * Create singletons from classes.
  * Notice: The empty implementation "{}" at the end.
  */
-//val mySingletonService = object : MyService(System.getProperty("PORT")!!.toInt()) {}
-//object MySingletonServiceAsObject : MyService(System.getProperty("PORT")!!.toInt())
+val mySingletonService = object : MyService(System.getProperty("PORT")!!.toInt()) {}
+object MySingletonServiceAsObject : MyService(System.getProperty("PORT")!!.toInt())
 
 /**
  *  @DO: As a factory and define the value in your main. (DISCUSSION)

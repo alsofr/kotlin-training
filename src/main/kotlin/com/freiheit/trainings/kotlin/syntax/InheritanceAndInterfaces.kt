@@ -1,22 +1,33 @@
-package com.freiheit.trainings.kotlin.syntax.classes
+package com.freiheit.trainings.kotlin.syntax
 
+/**
+ * Some simple class.
+ */
 class ASimpleClass(val myName: String)
+
+/**
+ * Some simple class with private field.
+ */
 class ASimpleClassWithPrivateFields(private val myPrivateName: String)
 
-// a class with a private constructor
-class MyClassWithAPrivateCtor private constructor(val port: Int = 8080)
+/**
+ * Some simple class with private ctor.
+ */
+class SimpleClassWithAPrivateCtor private constructor(val port: Int = 8080)
 
-// a class with a two constructors
-class MyClass(val port: Int = 8080, val myName: String, val mySecondName: String) {
+/**
+ * A class with two constructors and default values for named parameters.
+ */
+class SimpleClassWithTwoCtors(val port: Int = 8080, val myName: String, val mySecondName: String) {
     constructor (myName: String) : this(port = 7070, myName = myName, mySecondName = "MySecondName")
 }
 
 
 /**
- * @DO: Only add open to classes and functions if really needed.
- *
  * Notice: You need to add open to a class in order to inherit from it.
  * Notice: You need to add open to a function in order to override it.
+ *
+ * @DO: Only add open to classes and functions if really needed.
  */
 open class Widget(val key: String) {
     open fun jsonKey() = "{\"jsonKey\": \"$key\"}"
@@ -29,6 +40,7 @@ class MyWidget(key: String) : Widget(key) {
 
 /**
  * Kotlin has interfaces and they can have functions.
+ *
  * Notice: No need to add open to interfaces or interface functions in order to implement them or override their
  * functions.
  */
@@ -36,12 +48,23 @@ interface IWidget {
     fun jsonKey() = "{\"jsonKey\": \"IWidget\"}"
 }
 
+/**
+ * Implement an interface.
+ */
 class MyIWidget : IWidget
 
+/**
+ * Implement class and interface.
+ *
+ * Kotlin has
+ *
+ */
 class MyIAndMoreWidget : IWidget, Widget(key = "MyIAndMoreWidget") {
+    //NOTICE: Unlike Java override is a keyword
     override fun jsonKey(): String {
         //You will have to make which super explicit by providing the type.
         //Reason: name clashes.
+        //Kotlin also has super.
         return super<IWidget>.jsonKey()
     }
 }

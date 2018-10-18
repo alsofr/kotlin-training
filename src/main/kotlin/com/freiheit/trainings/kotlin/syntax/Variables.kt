@@ -5,9 +5,9 @@ import java.lang.IllegalStateException
 import java.lang.NullPointerException
 
 /************ val, var and const ***************************/
-
 /**
- * @DO: Use val whenever possible, because val is immutable.
+ * val is an immutable variable, var is mutable.
+ * @DO: use val whenever possible, because val is immutable.
  */
 fun valIsImmutable() {
     println("val is immutable...")
@@ -16,25 +16,29 @@ fun valIsImmutable() {
 // a = 5
     val immuList = listOf("hello", "kotlin")
     println("immuList $immuList")
+
     val immuList1 = immuList.plus("I am immutable")
     println("immuList1 $immuList1")
+
+    // you can do operator overloading in Kotlin (https://kotlinlang.org/docs/reference/operator-overloading.html)
     val immuList2 = immuList + ("I am still immutable")
     println("immuList2 $immuList2")
 }
 
 /**
- * @DO: Initialize val globally if they are global.
+ * @DO: Initialize values globally if they are global. See below make them even static.
  * @DONT: Global variables, because somebody may change it!
  * Notice: The scope is the current file, i.e., they can be imported via file name.
  */
 val immuList = listOf("hello", "kotlin")
 var varString = "hello"
-// does not work
-//varString = "world"
+
 
 /**
- * Notice: you can only reassign vars in functions
+ * Notice: you can only reassign vars in functions.
  */
+// does not work
+//varString = "world"
 fun reassign() {
     println("var is mutable...")
     var b = 3
@@ -57,7 +61,7 @@ fun constDoesNotWorkLocal() {
 
 /**
  * @DO: Use objects to group constants.
- * Notice: const is supported by objects.
+ * Notice: const is supported by objects (see Objects.kt).
  */
 object Constants {
     const val MY_GLOBAL_CONSTANT = "tea time"
@@ -87,21 +91,19 @@ val listWithMoreTypes: List<String> = listOf<String>("A", "B")
  */
 val stringWithTyp: String = "kotlinKnowsItIsAString"
 
-val nullStringInferred = null
-val nullString: String? = null
 
 // does not work
-// val nonNullString : String = null
+//varString = "world"
 
 /**
- * NOTICE: You must always define the return type of functions, unless.
+ * NOTICE: You must always define the return type of functions, unless...
  */
 fun returnSomething(): String {
     return "something"
 }
 
 /**
- * Your function can be a single expression.
+ * ...your function can be a single expression.
  */
 fun returnSomethingSingleExpression() = "something"
 
@@ -117,19 +119,24 @@ fun neverReturnsAndAlwaysThrows(): Nothing {
     throw IllegalStateException()
 }
 
-fun neverReturnsAndAlwaysThrowsWithVoid() {
-    throw IllegalStateException()
+/**
+ * What is the inferred type of null?
+ */
+fun reassignNullInferred() {
+    var nullInferred = null
+    // nope!
+//    nullInferred=0
 }
 
 /**
- * Notice...
+ * Notice: Nothing is handy for lambdas, for example.
  */
 fun nothingIsHandyForLambdas(v: String, f: (a: String) -> Nothing) {
-
+    f(v)
 }
 
 /**
- * Kotlin has [Any] as type.
+ * Kotlin also has [Any] as type.
  * @DONT: Avoid [Any] as return type ;)
  */
 fun returnsAny(): Any {
@@ -145,13 +152,14 @@ fun returnsAny(): Any {
  * - init lists as empty (to avoid null lists)
  * - init config values, such as port = 8080
  */
-/**
- * @DONT: Define defaults, because you can. It get's hard to understand why something is working out of the box.
- */
+
 // class PersonDao()
 // class PersonService(personDao : PersonDao = PersonDao())
 
 /**
+ * @DONT: Define defaults, because you can. It get's hard to understand why something is working out of the box.
+ * @DO: Use named parameters when calling a function or class, because it increases the readability in particular
+ * during code reviews.
  * @DO: initialize the list employees as emptyList(). The list will be never null!
  * @DONT: employess: List<String>? or even List<String?>?
  */
