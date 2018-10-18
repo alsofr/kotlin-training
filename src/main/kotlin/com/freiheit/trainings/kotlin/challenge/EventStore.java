@@ -22,4 +22,8 @@ public class EventStore implements IStore<Event> {
     @Override public void save( @NotNull String id, Event event ) {
         store.save( id, event );
     }
+
+    @Override public void drop() {
+        store.drop();
+    }
 }
