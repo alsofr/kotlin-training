@@ -11,16 +11,6 @@ import com.freiheit.trainings.kotlin.challenge.approved.PricesClient
  * there are a couple of tests already in place that the code has to fulfill.
  *
  *
- * This is the basic idea behind the new service:
- *
- * The persistence of the cart is backed by events.
- * The cart state shall be replayable to any given version.
- * No actual cart model is ever persisted.
- *
- * Hint: In Event Sourcing, the aggregation logic is best implemented
- *       as a left fold operation over all Events.
- *       (Cart, Event) -> Cart
- *
  * Todo:
  * ----------
  * Any Java classes shall be exorcised and converted to Kotlin.
@@ -41,25 +31,25 @@ import com.freiheit.trainings.kotlin.challenge.approved.PricesClient
 
 object Service {
     private val pricesClient = PricesClient
-    val db = EventStore()
+    val db = CartStore()
 
     fun createCart(): String {
         TODO()
     }
 
-    fun getCart(cartId: String): ActiveCart? {
+    fun getCart(cartId: String): Cart? {
         TODO()
     }
 
-    fun getCart(cartId: String, version: Int): ActiveCart? {
+    fun getCart(cartId: String, version: Int): Cart? {
         TODO()
     }
 
-    fun addItem(cartId: String, itemId: String, quantity: Int): ActiveCart? {
+    fun addItem(cartId: String, itemId: String, quantity: Int): Cart? {
         TODO()
     }
 
-    fun deleteItem(cartId: String, itemId: String): ActiveCart? {
+    fun deleteItem(cartId: String, itemId: String): Cart? {
         TODO()
     }
 

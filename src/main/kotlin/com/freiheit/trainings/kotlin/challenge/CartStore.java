@@ -1,26 +1,24 @@
 package com.freiheit.trainings.kotlin.challenge;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import com.freiheit.trainings.kotlin.challenge.approved.Event;
 import com.freiheit.trainings.kotlin.challenge.approved.IStore;
 import com.freiheit.trainings.kotlin.challenge.approved.Store;
 
-public class EventStore implements IStore<Event> {
-    private final Store<Event> store;
+public class CartStore implements IStore<Cart> {
+    private final Store<Cart> store;
 
-    public EventStore() {
+    public CartStore() {
         this.store = new Store<>();
     }
 
-    @NotNull @Override public List<Event> load( @NotNull String id ) {
+    @Nullable @Override public Cart load( @NotNull String id ) {
         return store.load( id );
     }
 
-    @Override public void save( @NotNull String id, Event event ) {
-        store.save( id, event );
+    @Override public void save( @NotNull String id, Cart cart ) {
+        store.save( id, cart );
     }
 
     @Override public void drop() {

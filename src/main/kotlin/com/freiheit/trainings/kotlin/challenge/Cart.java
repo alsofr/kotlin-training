@@ -3,12 +3,12 @@ package com.freiheit.trainings.kotlin.challenge;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class ActiveCart {
+public class Cart {
     private String cartId;
     private Map<String, Item> items;
     private Price price;
 
-    public ActiveCart() {
+    public Cart() {
     }
 
     public String getCartId() {

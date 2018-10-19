@@ -79,28 +79,5 @@ object ServiceSpec : Spek({
                 assertNull(service.getCart(cartId))
             }
         }
-
-        context("event replaying") {
-            it("returns the cart in the requested version") {
-                val cartId = service.createCart()
-                service.addItem(cartId, "1", 1)
-                service.addItem(cartId, "2", 2)
-                service.addItem(cartId, "1", 3)
-                service.deleteItem(cartId, "2")
-
-                fun assertCart(version: Int, itemCount: Int, totalPrice: BigDecimal) {
-                    service.getCart(cartId, version)
-                        .also {
-                            assertEquals(itemCount, it?.items?.size)
-                            assertEquals(totalPrice, it?.price?.amount)
-                        }
-                }
-                assertCart(0, 0, 0.toBigDecimal())
-                assertCart(1, 1, 1.toBigDecimal())
-                assertCart(2, 2, 3.toBigDecimal())
-                assertCart(3, 2, 5.toBigDecimal())
-                assertCart(4, 1, 3.toBigDecimal())
-            }
-        }
     }
 })

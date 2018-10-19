@@ -1,15 +1,15 @@
 package com.freiheit.trainings.kotlin.scoping
 
-import com.freiheit.trainings.kotlin.challenge.ActiveCart
+import com.freiheit.trainings.kotlin.challenge.Cart
 
 interface Service {
-    fun fetchArticles(cart: ActiveCart): ActiveCart
-    fun fetchPrices(cart: ActiveCart): ActiveCart
-    fun addItem(cart: ActiveCart, id: String, quantity: Int): ActiveCart
-    fun load(): ActiveCart?
-    fun create(): ActiveCart
-    fun save(cart: ActiveCart)
-    fun track(cart: ActiveCart)
+    fun fetchArticles(cart: Cart): Cart
+    fun fetchPrices(cart: Cart): Cart
+    fun addItem(cart: Cart, id: String, quantity: Int): Cart
+    fun load(): Cart?
+    fun create(): Cart
+    fun save(cart: Cart)
+    fun track(cart: Cart)
 }
 
 class Logic(private val service: Service) {
@@ -25,7 +25,7 @@ class Logic(private val service: Service) {
      *     - pollute autocompletion
      *     - easily mixed up
      */
-    fun processC(id: String, quantity: Int): ActiveCart? {
+    fun processC(id: String, quantity: Int): Cart? {
         var cart = service.load()
         if (cart == null) {
             cart = service.create()
@@ -48,7 +48,7 @@ class Logic(private val service: Service) {
      * - hard to read
      * - indentation gets ugly once the line is long enough
      */
-    fun processLisp(id: String, quantity: Int): ActiveCart {
+    fun processLisp(id: String, quantity: Int): Cart {
         val cart = service.fetchPrices(service.fetchArticles(service.addItem(service.load() ?: service.create(), id, quantity)))
         service.save(cart)
         service.track(cart)
@@ -81,7 +81,7 @@ class Logic(private val service: Service) {
             - returns result
          */
 
-        val reversedCartId = ActiveCart().run {
+        val reversedCartId = Cart().run {
             cartId.reversed()
         }
 
@@ -90,9 +90,9 @@ class Logic(private val service: Service) {
             - returns operand
             - handy for assignments
          */
-        val cartWithData = ActiveCart().apply {
-            items = mapOf("id" to ActiveCart.Item("id", 42, null))
-            price = ActiveCart.Price("EUR", 69.toBigDecimal())
+        val cartWithData = Cart().apply {
+            items = mapOf("id" to Cart.Item("id", 42, null))
+            price = Cart.Price("EUR", 69.toBigDecimal())
         }
 
         /* with(context) {}
@@ -118,7 +118,7 @@ class Logic(private val service: Service) {
      * + functional style
      * - boilerplate
      */
-    fun processScoping(id: String, quantity: Int): ActiveCart {
+    fun processScoping(id: String, quantity: Int): Cart {
         return (service.load() ?: service.create())
             .let { service.addItem(it, id, quantity) }
             .run { service.fetchArticles(this) }
