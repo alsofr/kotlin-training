@@ -20,7 +20,6 @@ dependencies {
     testCompile(kotlin("test", version = "1.3.0-rc-146"))
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
-
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
     testImplementation("io.mockk:mockk:1.8.9")
     testCompile("org.jetbrains.spek:spek-api:1.1.5")

@@ -1,6 +1,11 @@
 package com.freiheit.trainings.kotlin.collections
 
 
+/**
+ * Collections...
+ *
+ * @DO: Read the docu and release notes!
+ */
 fun main(args: Array<String>) {
     val list = listOf(1, 2, 3)
     val mutabList = mutableListOf(1, 2, 3)

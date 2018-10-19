@@ -10,6 +10,7 @@ import kotlin.test.*
 
 object ServiceSpec : Spek({
     describe("Service") {
+        // memoized? see https://github.com/spekframework/spek/issues/102
         val service by memoized { Service }
 
         beforeEachTest { service.db.drop() }
@@ -29,6 +30,7 @@ object ServiceSpec : Spek({
         context("item addition") {
             it("adds an item") {
                 val cart = service.createCart()
+                        //@DO: good example for let.
                     .let { service.addItem(it, "1", 69) }
 
                 assertNotNull(cart)

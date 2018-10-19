@@ -24,7 +24,7 @@ import kotlin.test.assertEquals
  * Available Mocking libraries:
  * - Mockk <3
  * - Mockito-Kotlin
- * 
+ *
  * This example uses Spek (https://github.com/spekframework) (AFIK it is also maintained by Jetbrains). It is inspired
  * by test frameworks like Jasmine and RSpec.
  */

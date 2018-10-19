@@ -3,10 +3,13 @@ package com.freiheit.trainings.kotlin.syntax
 
 /**
  * Data classes.
- * - Generated code for equals, hash, toString.
  *
  * @DO: Use them for data!
  * @DO: Do not simply rely on equals etc. even though it is generated code. Make sure you still test it.
+ * @DONT: Use them for functional components such as service.
+ *
+ * + generated equals, hash and toString (no overhead)
+ * - it is easy to blindly rely the generated code and use them everywhere
  */
 data class CustomerData(val name: String, val relatives: Map<String, CustomerData> = emptyMap())
 

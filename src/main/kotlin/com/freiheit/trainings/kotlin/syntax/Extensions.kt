@@ -12,7 +12,7 @@ private val shuffled = "ABC".shuffle()
  *  - Your extension might collide with future implementations in the stdlib
  */
 fun String.capitalize(): String = TODO()
-val lowerCase = "abc".capitalize()
+val lowerCase = "filterEvents".capitalize()
 
 /**
  * @DO Use extension in a very restricted scope

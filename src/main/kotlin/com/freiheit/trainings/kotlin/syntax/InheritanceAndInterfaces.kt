@@ -22,12 +22,13 @@ class SimpleClassWithTwoCtors(val port: Int = 8080, val myName: String, val mySe
     constructor (myName: String) : this(port = 7070, myName = myName, mySecondName = "MySecondName")
 }
 
-
 /**
  * Notice: You need to add open to a class in order to inherit from it.
  * Notice: You need to add open to a function in order to override it.
  *
  * @DO: Only add open to classes and functions if really needed.
+ *
+ * + Decision to introduce inheritance is explicit! You can even write a comment why the class is open!
  */
 open class Widget(val key: String) {
     open fun jsonKey() = "{\"jsonKey\": \"$key\"}"
@@ -56,11 +57,13 @@ class MyIWidget : IWidget
 /**
  * Implement class and interface.
  *
- * Kotlin has
- *
+ * Notice: Like Java, Kotlin has no multi-inheritance of classes. Also like Java, you can extend a class and implement
+ * several interfaces.
  */
 class MyIAndMoreWidget : IWidget, Widget(key = "MyIAndMoreWidget") {
-    //NOTICE: Unlike Java override is a keyword
+    /**
+     * NOTICE: Unlike Java override is a keyword
+     */
     override fun jsonKey(): String {
         //You will have to make which super explicit by providing the type.
         //Reason: name clashes.
@@ -70,7 +73,6 @@ class MyIAndMoreWidget : IWidget, Widget(key = "MyIAndMoreWidget") {
 }
 
 fun main(args: Array<String>) {
-
     /**
      * NOTICE (unlike Java): no new needed in Kotlin!
      */
