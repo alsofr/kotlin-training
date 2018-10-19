@@ -7,7 +7,8 @@ Agenda
 # ImMutability
 # Objects
 # DelegationAndLazy
-> 25 minutes
+# Collections & Sequences
+> 35 minutes
 # ComputedProperties
 # Extensions
 # Lambdas
@@ -15,11 +16,8 @@ Agenda
 # When
 # Operators
 # InlineFunctions
-> 25 minutes
-# Collections & Sequences
-> 10 minutes
 # Scoping
-> 10 minutes
+> 35 minutes
 # Testing
 > 15 minutes
 # Coding
