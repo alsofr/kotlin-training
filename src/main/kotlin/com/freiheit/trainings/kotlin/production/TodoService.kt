@@ -6,7 +6,9 @@ import java.util.*
 
 object TodoStore : IStore<Todo> by InMemoryStore()
 
-class TodoService(private val store: TodoStore) {
+val todoService = TodoService(store = TodoStore)
+
+class TodoService(private val store: IStore<Todo>) {
 
     fun process(command: Command): Todo {
         return when (command) {
