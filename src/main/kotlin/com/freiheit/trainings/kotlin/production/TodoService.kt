@@ -4,42 +4,59 @@ import com.freiheit.trainings.kotlin.production.Command.AssignTodo
 import com.freiheit.trainings.kotlin.production.Command.CreateTodo
 import java.util.*
 
+// Object, delegation Tim
 object TodoStore : IStore<Todo> by InMemoryStore()
 
+// variables, constructor, named params, package level definitions Tim
 val todoService = TodoService(store = TodoStore)
 
+// TODO string multiline EL
+
+// (non-open) class, constructor params, generics Tim
 class TodoService(private val store: IStore<Todo>) {
 
+    // functions, types, sealed class EL
     fun process(command: Command): Todo {
+        // when EL
         return when (command) {
             is CreateTodo -> Todo.Open(
                 id = generateId(),
                 data = Todo.Data(assignee = command.assignee, description = command.description)
             )
+            // nullability, extensions EL
             is AssignTodo -> store
                 .load(command.id)
                 ?.assign(command.assignee)
             is Command.MarkCompleted -> store
                 .load(command.id)
                 ?.complete()
+            // expressions, scoping, elvis EL
         }?.also { store.save(it.id, it) } ?: throw IllegalArgumentException("Todo does not exist.")
     }
 
+    // TODO inline + block EL
+
+    // TODO collections Tim
+
+    // func assignement
+    /**
+     * @see com.freiheit.trainings.kotlin.scoping.Logic
+     */
     private fun generateId() = "${UUID.randomUUID()}"
 
     private fun Todo.assign(user: UserId): Todo = when (this) {
-        is Todo.Open -> Todo.Open(id = id, data = data.assign(user))
-        is Todo.InProgress -> Todo.InProgress(id = id, data = data.assign(user), startedAt = startedAt)
+        // data class, copy Tim
+        is Todo.Open -> Todo.Open(id = id, data = data.copy(assignee = user))
+        is Todo.InProgress -> Todo.InProgress(id = id, data = data.copy(assignee = user), startedAt = startedAt)
         is Todo.Completed -> throw IllegalStateException("Cannot assign an already completed TODO.")
     }
 
     private fun Todo.complete(): Todo = when (this) {
         is Todo.Open -> throw IllegalStateException("Cannot complete a TODO that was not started.")
+        // default parameters Tim
         is Todo.InProgress -> Todo.Completed(id = id, data = data, startedAt = startedAt)
         is Todo.Completed -> throw IllegalStateException("TODO was already completed.")
     }
-
-    private fun Todo.Data.assign(user: UserId) = copy(assignee = user)
 }
 
 sealed class Command {
