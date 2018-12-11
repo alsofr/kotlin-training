@@ -10,15 +10,17 @@ class TodoService(private val store: TodoStore) {
 
     fun process(command: Command): Todo {
         return when (command) {
-            is CreateTodo -> Todo.Open(generateId(), Todo.Data(assignee = command.assignee, description = command.description))
-                .also { store.save(it.id, it) }
-            is AssignTodo -> store.forceLoad(command.id)
-                .assign(command.assignee)
-                .also { store.save(it.id, it) }
-            is Command.MarkCompleted -> store.forceLoad(command.id)
-                .complete()
-                .also { store.save(it.id, it) }
-        }
+            is CreateTodo -> Todo.Open(
+                id = generateId(),
+                data = Todo.Data(assignee = command.assignee, description = command.description)
+            )
+            is AssignTodo -> store
+                .load(command.id)
+                ?.assign(command.assignee)
+            is Command.MarkCompleted -> store
+                .load(command.id)
+                ?.complete()
+        }?.also { store.save(it.id, it) } ?: throw IllegalArgumentException("Todo does not exist.")
     }
 
     private fun generateId() = "${UUID.randomUUID()}"
@@ -36,8 +38,6 @@ class TodoService(private val store: TodoStore) {
     }
 
     private fun Todo.Data.assign(user: UserId) = copy(assignee = user)
-
-    private fun TodoStore.forceLoad(id: String): Todo = load(id) ?: throw IllegalArgumentException("Todo [$id] does not exist.")
 }
 
 sealed class Command {
