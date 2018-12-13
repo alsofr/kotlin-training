@@ -10,38 +10,69 @@ object TodoStore : IStore<Todo> by InMemoryStore()
 // variables, constructor, named params, package level definitions Tim
 val todoService = TodoService(store = TodoStore)
 
-// TODO string multiline EL
+/**
+ * Lambdas:
+ * @see com.freiheit.trainings.kotlin.syntax.lambda
+ *
+ * Strings:
+ * @see com.freiheit.trainings.kotlin.syntax.string
+ */
+private val request = {
+    todoService.process(CreateTodo(UserId("Eugen"), """
+        1. Create grocery list
+        2. Buy
+        3. Profit
+    """.trimIndent())
+    )
+}
 
 // (non-open) class, constructor params, generics Tim
 class TodoService(private val store: IStore<Todo>) {
 
-    // functions, types, sealed class EL
+    /**
+     * Type system:
+     * @see com.freiheit.trainings.kotlin.syntax.stringWithoutTyp
+     *
+     * When:
+     * @see com.freiheit.trainings.kotlin.syntax.multiBranch
+     *
+     * Sealed classes:
+     * @see com.freiheit.trainings.kotlin.syntax.MyType
+     *
+     * Extensions:
+     * @see com.freiheit.trainings.kotlin.syntax.extension
+     *
+     * Inline functions:
+     * @see com.freiheit.trainings.kotlin.syntax.measure
+     *
+     * Scoping:
+     * @see com.freiheit.trainings.kotlin.scoping
+     *
+     */
     fun process(command: Command): Todo {
-        // when EL
-        return when (command) {
-            is CreateTodo -> Todo.Open(
-                id = generateId(),
-                data = Todo.Data(assignee = command.assignee, description = command.description)
-            )
-            // nullability, extensions EL
-            is AssignTodo -> store
-                .load(command.id)
-                ?.assign(command.assignee)
-            is Command.MarkCompleted -> store
-                .load(command.id)
-                ?.complete()
-            // expressions, scoping, elvis EL
-        }?.also { store.save(it.id, it) } ?: throw IllegalArgumentException("Todo does not exist.")
+        return withLogging {
+            when (command) {
+                is CreateTodo -> Todo.Open(
+                    id = generateId(),
+                    data = Todo.Data(assignee = command.assignee, description = command.description)
+                )
+                is AssignTodo -> store
+                    .load(command.id)
+                    ?.assign(command.assignee)
+                is Command.MarkCompleted -> store
+                    .load(command.id)
+                    ?.complete()
+            }?.also { todo -> store.save(todo.id, todo) } ?: throw IllegalArgumentException("Todo does not exist.")
+        }
     }
 
-    // TODO inline + block EL
+    private inline fun <V> withLogging(block: () -> V): V {
+        println("starting operation at ${System.currentTimeMillis()}")
+        return block().also { println("finishing operation at ${System.currentTimeMillis()}") }
+    }
 
     // TODO collections Tim
 
-    // func assignement
-    /**
-     * @see com.freiheit.trainings.kotlin.scoping.Logic
-     */
     private fun generateId() = "${UUID.randomUUID()}"
 
     private fun Todo.assign(user: UserId): Todo = when (this) {

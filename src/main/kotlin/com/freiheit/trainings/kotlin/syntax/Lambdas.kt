@@ -3,13 +3,13 @@ package com.freiheit.trainings.kotlin.syntax
 /**
  * Lambdas are declared with curlies
  */
-private val foo = { s: String -> s[69] }
+val lambda = { s: String -> s[69] }
 
 
 /**
  * Single argument lambdas can omit giving [it] a name
  */
-private val bar: (String) -> Char = { it[69] }
+private val foo: (String) -> Char = { it[69] }
 
 
 /**

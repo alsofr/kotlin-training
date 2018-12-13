@@ -1,5 +1,8 @@
 package com.freiheit.trainings.kotlin.syntax
 
+
+val string = "as usual"
+
 /**
  * Strings are beside primitive the only types eligible being compile-time constants
  *

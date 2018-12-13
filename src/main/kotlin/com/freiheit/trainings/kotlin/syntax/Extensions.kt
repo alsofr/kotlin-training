@@ -1,5 +1,8 @@
 package com.freiheit.trainings.kotlin.syntax
 
+
+fun Any?.extension() = "You can call this function on all objects and null from anywhere"
+
 /**
  * Extensions are static functions that can be called directly on the extended object
  */

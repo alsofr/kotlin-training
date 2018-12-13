@@ -8,7 +8,7 @@ package com.freiheit.trainings.kotlin.syntax
  * @DONT Make arbitrary functions [inline] to save performance.
  *       Things can get very bad, if you are not entirely sure what you are doing.
  */
-private inline fun measure(block: () -> Unit): Long {
+inline fun measure(block: () -> Unit): Long {
     val start = System.currentTimeMillis()
     block()
     return System.currentTimeMillis() - start
