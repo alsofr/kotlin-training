@@ -7,7 +7,6 @@ import java.util.UUID
 /**
  * Objects:
  * @see com.freiheit.trainings.kotlin.syntax.Objects.kt
- *
  * Delegation & Lazy:
  * @see com.freiheit.trainings.kotlin.syntax.DelegationAndLazy.kt
  */
@@ -16,10 +15,8 @@ object TodoStore : IStore<Todo> by InMemoryStore()
 /**
  * Variables:
  * @see com.freiheit.trainings.kotlin.syntax.Variables.kt
- *
  * Type inference:
  * @see com.freiheit.trainings.kotlin.syntax.TypeInference.kt
- *
  * Nullability & Defaults:
  * @see com.freiheit.trainings.kotlin.syntax.NullabilityAndDefaults.kt
  */
@@ -29,7 +26,6 @@ val todoService = TodoService(store = TodoStore)
 /**
  * Lambdas:
  * @see com.freiheit.trainings.kotlin.syntax.lambda
- *
  * Strings:
  * @see com.freiheit.trainings.kotlin.syntax.string
  */
@@ -42,53 +38,57 @@ private val request = {
     )
 }
 
+enum class State {
+    NOT_RUNNING,
+    INIT,
+    RUNNING,
+    UNKNOWN
+}
 
 /**
  * Classes and interfaces:
- * @see com.freiheit.trainings.kotlin.syntax.ClassesAndInterfaces.kt
- *
- * Data classes:
- * @see com.freiheit.trainings.kotlin.syntax.DataClasses.kt
+ * @see com.freiheit.trainings.kotlin.syntax.ClassesAndInterfaces
  */
 class TodoService(private val store: IStore<Todo>) {
+    /**
+     * When:
+     * @see com.freiheit.trainings.kotlin.syntax.Point
+     */
+    val state: State
+        get() = State.UNKNOWN
 
     /**
-     * Type system:
-     * @see com.freiheit.trainings.kotlin.syntax.stringWithoutTyp
-     *
      * When:
      * @see com.freiheit.trainings.kotlin.syntax.multiBranch
-     *
      * Sealed classes:
      * @see com.freiheit.trainings.kotlin.syntax.MyType
-     *
      * Extensions:
      * @see com.freiheit.trainings.kotlin.syntax.extension
-     *
-     * Inline functions:
-     * @see com.freiheit.trainings.kotlin.syntax.measure
-     *
      * Scoping:
-     * @see com.freiheit.trainings.kotlin.scoping
+     * @see com.freiheit.trainings.kotlin.scoping.Logic
      *
      */
     fun process(command: Command): Todo {
         return withLogging {
             when (command) {
                 is CreateTodo -> Todo.Open(
-                    id = generateId(),
-                    data = Todo.Data(assignee = command.assignee, description = command.description)
+                        id = generateId(),
+                        data = Todo.Data(assignee = command.assignee, description = command.description)
                 )
                 is AssignTodo -> store
-                    .load(command.id)
-                    ?.assign(command.assignee)
+                        .load(command.id)
+                        ?.assign(command.assignee)
                 is Command.MarkCompleted -> store
-                    .load(command.id)
-                    ?.complete()
+                        .load(command.id)
+                        ?.complete()
             }?.also { todo -> store.save(todo.id, todo) } ?: throw IllegalArgumentException("Todo does not exist.")
         }
     }
 
+    /**
+     * Inline functions:
+     * @see com.freiheit.trainings.kotlin.syntax.measure
+     */
     private inline fun <V> withLogging(block: () -> V): V {
         println("starting operation at ${System.currentTimeMillis()}")
         return block().also { println("finishing operation at ${System.currentTimeMillis()}") }
@@ -97,7 +97,6 @@ class TodoService(private val store: IStore<Todo>) {
     /**
      * Collections:
      * @see com.freiheit.trainings.kotlin.collections.Collections.kt
-     *
      * Sequences:
      * @see com.freiheit.trainings.kotlin.collections.Sequences.kt
      */
@@ -108,8 +107,11 @@ class TodoService(private val store: IStore<Todo>) {
 
     private fun generateId() = "${UUID.randomUUID()}"
 
+    /**
+     * Data classes:
+     * @see com.freiheit.trainings.kotlin.syntax.DataClasses.kt
+     */
     private fun Todo.assign(user: UserId): Todo = when (this) {
-        // data class, copy Tim
         is Todo.Open -> Todo.Open(id = id, data = data.copy(assignee = user))
         is Todo.InProgress -> Todo.InProgress(id = id, data = data.copy(assignee = user), startedAt = startedAt)
         is Todo.Completed -> throw IllegalStateException("Cannot assign an already completed TODO.")
@@ -137,7 +139,7 @@ sealed class Todo(val id: String, val data: Data) {
     class InProgress(id: String, data: Data, val startedAt: Long = System.currentTimeMillis()) : Todo(id, data)
 
     class Completed(id: String, data: Data, val startedAt: Long, val completedAt: Long = System.currentTimeMillis()) :
-        Todo(id, data)
+            Todo(id, data)
 }
 
 inline class UserId(val id: String)

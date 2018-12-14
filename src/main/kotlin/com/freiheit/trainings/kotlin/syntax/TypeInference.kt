@@ -1,9 +1,5 @@
 package com.freiheit.trainings.kotlin.syntax
 
-import java.lang.Exception
-import java.lang.IllegalStateException
-import java.lang.NullPointerException
-
 
 /**
  * Unlike Java, Kotlin infers types
