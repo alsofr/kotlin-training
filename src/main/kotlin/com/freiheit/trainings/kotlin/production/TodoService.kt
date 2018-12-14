@@ -5,18 +5,22 @@ import com.freiheit.trainings.kotlin.production.Command.CreateTodo
 import java.util.UUID
 
 /**
- * More infos about object and delegations
- *
+ * Objects:
  * @see com.freiheit.trainings.kotlin.syntax.Objects.kt
+ *
+ * Delegation & Lazy:
  * @see com.freiheit.trainings.kotlin.syntax.DelegationAndLazy.kt
  */
 object TodoStore : IStore<Todo> by InMemoryStore()
 
 /**
- * More infos about variables, types, defaults and nullability
- *
+ * Variables:
  * @see com.freiheit.trainings.kotlin.syntax.Variables.kt
+ *
+ * Type inference:
  * @see com.freiheit.trainings.kotlin.syntax.TypeInference.kt
+ *
+ * Nullability & Defaults:
  * @see com.freiheit.trainings.kotlin.syntax.NullabilityAndDefaults.kt
  */
 val todoService = TodoService(store = TodoStore)
@@ -40,9 +44,10 @@ private val request = {
 
 
 /**
- * More infos about classes and interfaces
- *
+ * Classes and interfaces:
  * @see com.freiheit.trainings.kotlin.syntax.ClassesAndInterfaces.kt
+ *
+ * Data classes:
  * @see com.freiheit.trainings.kotlin.syntax.DataClasses.kt
  */
 class TodoService(private val store: IStore<Todo>) {
@@ -90,9 +95,10 @@ class TodoService(private val store: IStore<Todo>) {
     }
 
     /**
-     * More infos about collections
-     *
+     * Collections:
      * @see com.freiheit.trainings.kotlin.collections.Collections.kt
+     *
+     * Sequences:
      * @see com.freiheit.trainings.kotlin.collections.Sequences.kt
      */
     fun assignAndFilterForUser(commands: List<Command.AssignTodo>, user: UserId): List<Todo> {
