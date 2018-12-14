@@ -8,7 +8,7 @@ package com.freiheit.trainings.kotlin.syntax
  * @DO: Do not simply rely on equals etc. even though it is generated code. Make sure you still test it.
  * @DONT: Use them for functional components such as service.
  *
- * + generated equals, hash and toString (no overhead)
+ * + generated copy, equals, hash and toString (no overhead)
  * - it is easy to blindly rely the generated code and use them everywhere
  */
 data class CustomerData(val name: String, val relatives: Map<String, CustomerData> = emptyMap())
@@ -18,6 +18,7 @@ fun workingWithDataClasses() {
     val max = CustomerData(name = "Max", relatives = mapOf("Moritz" to moritz))
     val maxN = CustomerData(name = "Max", relatives = mapOf("Moritz" to moritz))
 
+    val tim = max.copy(name = "Tim")
     // you can replace equals with ==
     val maxEqMoritz = moritz.equals(max)
     val maxEqMaxN = max == maxN

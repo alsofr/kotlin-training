@@ -2,30 +2,37 @@ package com.freiheit.trainings.kotlin.syntax
 
 
 /***
- * Objects are, like Scala, singletons.
- * Notice: There is not ctor, but init (which is rather ...)
+ * Objects are, like in Scala, singletons.
+ * Notice: An object has no constructor.
  *
  * @DO: Use them for Singletons!
  *
  */
 object MySingletonService {
-    // port is var and nullable :(
-//    var port: Int? = null
-    val port : Int
+    /**
+     * Port can be a value here, because it gets initialized in init {...}
+     * @DO: Try to avoid using init too much. Assign values as early as possible.
+     */
+    val port: Int
 
     init {
-        // Try to avoid this situation. Although init is guaranteed to run always a first instruction,
-        // you still need to check for null. (see main below)
         port = 8080
     }
 
+    //objects can have functions!
     fun getData(): CustomerData {
         return CustomerData(name = "max")
     }
 }
 
 /**
- * Companion Objects. (see main below)
+ * Service having a companion object, which is an extension of the concept of “object”.
+ * An object that is a companion to a particular class, and thus has access to it’s private level methods and properties.
+ *
+ * Using the companion object adds consistency to the language design, whereas “static” is not consistent with the
+ * rest of the language design.
+ *
+ * A companion can be called like static methods in Java, for example, MyService.create().
  */
 open class MyService(val port: Int = 8080) {
     companion object {
@@ -43,16 +50,10 @@ open class MyService(val port: Int = 8080) {
  * Notice: The empty implementation "{}" at the end.
  */
 val mySingletonService = object : MyService(System.getProperty("PORT")!!.toInt()) {}
+
 object MySingletonServiceAsObject : MyService(System.getProperty("PORT")!!.toInt())
 
 /**
  *  @DO: As a factory and define the value in your main. (DISCUSSION)
  */
 val myService = MyService.create(8080)
-
-fun main(args: Array<String>) {
-    // you need to deal with null here...
-    println(MySingletonService.port?.let { print("port is $it") })
-    println(MyService.create().port)
-    println(MyService().port)
-}

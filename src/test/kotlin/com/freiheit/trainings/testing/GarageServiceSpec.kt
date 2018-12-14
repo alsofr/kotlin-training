@@ -58,7 +58,6 @@ object GarageSpek : Spek({
             clearMocks(userDao, vehicleDao)
         }
 
-
         context("read garage") {
             it("should return a garage") {
                 every {
@@ -100,9 +99,10 @@ object GarageSpek : Spek({
                 } returns listOf(testVehicle1, testVehicle2)
 
 
-                garageService.readGarage(userId = "test1")
+//                garageService.readGarage(userId = "test1")
                 garageService.readGarage(userId = "test2")
-                verify(exactly = 2) { userDao.readUser(userId = or("test1", "test2")) }
+                verify(exactly = 2) { garageService.readGarage(userId =
+                or("test1", "test2")) }
             }
         }
 

@@ -2,9 +2,8 @@ package com.freiheit.trainings.kotlin.collections
 
 
 /**
- * Collections...
- *
- * @DO: Read the docu and release notes!
+ * Kotlin has a powerful collection API. The best way to get in touch with its power is by reading the docu and
+ * release notes!
  */
 fun main(args: Array<String>) {
     val list = listOf(1, 2, 3)
@@ -25,6 +24,7 @@ fun main(args: Array<String>) {
 
 
     val incrList = list.map { it + 1 }//.toList()
+
     println("incrList $incrList")
     list.findLast { it % 2 == 1 }
     list.filter { it % 2 == 1 }

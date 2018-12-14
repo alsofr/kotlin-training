@@ -1,12 +1,9 @@
 package com.freiheit.trainings.kotlin.syntax
 
 /**
- * Delegation.
-
- * NOTICE: Only works for interfaces!
+ * For interfaces, delegation is simple in Kotlin
  *
- * @DO: if you need delegation and also for testing.
- *
+ * @DO: if you need delegation, which is also great for testing.
  * + not needed to write dispatching code
  */
 class MyList<T>(list: List<T> = emptyList()) : List<T> by list {
@@ -18,7 +15,6 @@ class MyList<T>(list: List<T> = emptyList()) : List<T> by list {
  * Lazy.
  *
  * @DONT Don't be lazy because you can, try to be eager, because lazy makes compile time issues to runtime issues.
- *
  * + lazy is thread safe (you can set by lazy(mode = LazyThreadSafetyMode.PUBLICATION)) if you don't need thread
  * safety.
  *
@@ -31,7 +27,7 @@ val connection by lazy {
     dbConnector.connect()
 }
 
-class DatabaseConnector() {
+class DatabaseConnector {
     class Connection
 
     fun connect(): Connection = Connection()
@@ -48,15 +44,6 @@ fun lazyComputation(): String {
 }
 
 /**
- * @DONT / @DO: Recommendation is DONT, because it evaluation may lead to runtime issues. Again, try to be eager.
+ * @DONT: Evaluation may lead to runtime issues. Try to be eager if possible.
  */
 val lazyList = listOf(lazyComputation(), lazyComputation())
-
-
-fun main(args: Array<String>) {
-    val l: MyList<String> = MyList(list = listOf("A", "B", "C"))
-    println(l.size)
-    println(l[0])
-
-    lazyList.map { println(it) }
-}

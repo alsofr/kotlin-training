@@ -27,7 +27,6 @@ class SimpleClassWithTwoCtors(val port: Int = 8080, val myName: String, val mySe
  * Notice: You need to add open to a function in order to override it.
  *
  * @DO: Only add open to classes and functions if really needed.
- *
  * + Decision to introduce inheritance is explicit! You can even write a comment why the class is open!
  */
 open class Widget(val key: String) {

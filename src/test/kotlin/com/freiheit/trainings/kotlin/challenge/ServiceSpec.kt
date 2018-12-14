@@ -63,7 +63,7 @@ object ServiceSpec : Spek({
         }
 
         context("item removal") {
-            it("removes an item") {
+            it("removes an item ") {
                 val cart = service.createCart()
                     .let { service.addItem(it, "1", 69) }
                     ?.let { service.deleteItem(it.cartId, "1") }

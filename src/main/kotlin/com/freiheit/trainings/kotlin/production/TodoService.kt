@@ -2,13 +2,25 @@ package com.freiheit.trainings.kotlin.production
 
 import com.freiheit.trainings.kotlin.production.Command.AssignTodo
 import com.freiheit.trainings.kotlin.production.Command.CreateTodo
-import java.util.*
+import java.util.UUID
 
-// Object, delegation Tim
+/**
+ * More infos about object and delegations
+ *
+ * @see com.freiheit.trainings.kotlin.syntax.Objects.kt
+ * @see com.freiheit.trainings.kotlin.syntax.DelegationAndLazy.kt
+ */
 object TodoStore : IStore<Todo> by InMemoryStore()
 
-// variables, constructor, named params, package level definitions Tim
+/**
+ * More infos about variables, types, defaults and nullability
+ *
+ * @see com.freiheit.trainings.kotlin.syntax.Variables.kt
+ * @see com.freiheit.trainings.kotlin.syntax.TypeInference.kt
+ * @see com.freiheit.trainings.kotlin.syntax.NullabilityAndDefaults.kt
+ */
 val todoService = TodoService(store = TodoStore)
+
 
 /**
  * Lambdas:
@@ -26,7 +38,13 @@ private val request = {
     )
 }
 
-// (non-open) class, constructor params, generics Tim
+
+/**
+ * More infos about classes and interfaces
+ *
+ * @see com.freiheit.trainings.kotlin.syntax.ClassesAndInterfaces.kt
+ * @see com.freiheit.trainings.kotlin.syntax.DataClasses.kt
+ */
 class TodoService(private val store: IStore<Todo>) {
 
     /**
@@ -71,7 +89,16 @@ class TodoService(private val store: IStore<Todo>) {
         return block().also { println("finishing operation at ${System.currentTimeMillis()}") }
     }
 
-    // TODO collections Tim
+    /**
+     * More infos about collections
+     *
+     * @see com.freiheit.trainings.kotlin.collections.Collections.kt
+     * @see com.freiheit.trainings.kotlin.collections.Sequences.kt
+     */
+    fun assignAndFilterForUser(commands: List<Command.AssignTodo>, user: UserId): List<Todo> {
+        return commands.map { c -> process(c) }
+                .filter { it.data.assignee == user }
+    }
 
     private fun generateId() = "${UUID.randomUUID()}"
 
