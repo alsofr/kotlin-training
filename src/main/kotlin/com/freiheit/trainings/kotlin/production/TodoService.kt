@@ -11,6 +11,8 @@ import java.util.UUID
  * @see com.freiheit.trainings.kotlin.syntax.DelegationAndLazy.kt
  */
 object TodoStore : IStore<Todo> by InMemoryStore()
+// Notice from training: Question if this is also possible.
+//object TodoStore : List<String> by listOf(), IStore<Todo> by InMemoryStore()
 
 /**
  * Variables:

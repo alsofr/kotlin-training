@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.0-rc-146"
+    kotlin("jvm") version "1.3.11"
 }
 
 group = "training"
@@ -20,6 +20,9 @@ dependencies {
     testCompile(kotlin("test", version = "1.3.0-rc-146"))
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
+
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
     testImplementation("io.mockk:mockk:1.8.9")
     testCompile("org.jetbrains.spek:spek-api:1.1.5")

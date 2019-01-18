@@ -25,6 +25,7 @@ fun workingWithNulls() {
 
     // bang bang !! throws NPE if nullString is null
     try {
+//        val a:String? = nullString?.plus("test")
         if (nullString!!.isNotEmpty()) {
             println("length > 0")
         }

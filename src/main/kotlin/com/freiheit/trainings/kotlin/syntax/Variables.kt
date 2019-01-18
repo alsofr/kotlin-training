@@ -1,7 +1,7 @@
 package com.freiheit.trainings.kotlin.syntax
 
 /**
- * Kotlin has val, var, and const. bal is an immutable variable, var is mutable and const is contstan, but
+ * Kotlin has val, var, and const. val is an immutable variable, var is mutable and const is contstant, but
  * only works for simple types.
  *
  * @DO: use val whenever possible, because val is immutable.
@@ -9,14 +9,15 @@ package com.freiheit.trainings.kotlin.syntax
  */
 fun valIsImmutable() {
     println("val is immutable...")
-    val a = 5
+    val a: Int = 5
 
     // Does not work
     // a = 5
+
     val immuList = listOf("hello", "kotlin")
     println("immuList $immuList")
 
-    // val mutList : MutableList...
+    val mutList = mutableListOf("1")
 
     val immuList1 = immuList.plus("I am immutable")
     println("immuList1 $immuList1")
@@ -25,6 +26,9 @@ fun valIsImmutable() {
     val immuList2 = immuList + ("I am still immutable")
     println("immuList2 $immuList2")
 }
+
+
+const val DEFAULT_PORT: Int = 8080
 
 /**
  * @DO: Initialize values globally if they are global. See below make them even static.
@@ -35,4 +39,4 @@ fun valIsImmutable() {
 val immuList = listOf("hello", "kotlin")
 //DONT!
 var varString = "hello"
-const val DEFAULT_PORT: Int = 8080
+

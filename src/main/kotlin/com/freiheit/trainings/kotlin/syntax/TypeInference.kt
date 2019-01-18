@@ -31,31 +31,3 @@ fun returnSomething(str: String): String {
  * ...your function can be a single expression.
  */
 fun returnSomethingSingleExpression(str: String) = if(str.startsWith("r")) str else str + 1
-
-/**
- * What is the inferred type of null?
- */
-fun reassignNullInferred() {
-    var nullInferred  = null
-    // nope!
-//    nullInferred=0
-}
-
-/**
- * Kotlin has [Nothing] as type.
- */
-fun neverReturnsAndAlwaysThrows(): Nothing {
-    throw IllegalStateException()
-}
-
-/**
- * Notice: Nothing is handy for lambdas, for example.
- */
-fun nothingIsHandyForLambdas(v: String, f: (a: String) -> Nothing): Nothing = f(v)
-
-/**
- * Kotlin also has [Any] as type.
- *
- * @DONT: Avoid [Any] as return type.
- */
-fun returnsAny(): Any = 1

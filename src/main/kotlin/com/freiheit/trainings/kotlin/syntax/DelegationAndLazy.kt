@@ -14,7 +14,7 @@ class MyList<T>(list: List<T> = emptyList()) : List<T> by list {
 /**
  * Lazy.
  *
- * @DONT Don't be lazy because you can, try to be eager, because lazy makes compile time issues to runtime issues.
+ * @DONT Don't be lazy because you can, try to be eager, because lazy makes start time issues to runtime issues.
  * + lazy is thread safe (you can set by lazy(mode = LazyThreadSafetyMode.PUBLICATION)) if you don't need thread
  * safety.
  *
