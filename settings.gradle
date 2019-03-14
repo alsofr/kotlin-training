@@ -1,0 +1,6 @@
+rootProject.name = "kotlin-training"
+include 'snippets'
+include 'proto'
+include 'todo-service'
+include 'user-service'
+
