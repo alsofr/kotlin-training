@@ -32,7 +32,7 @@ object MySingletonService {
  * Using the companion object adds consistency to the language design, whereas “static” is not consistent with the
  * rest of the language design.
  *
- * A companion can be called like static methods in Java, for example, MyService.create().
+ * A companion can be called like static methods in Java, for example, MyService.createTodo().
  */
 open class MyService(val port: Int = 8080) {
     companion object {

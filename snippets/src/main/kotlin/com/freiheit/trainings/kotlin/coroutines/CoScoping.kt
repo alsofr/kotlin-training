@@ -28,7 +28,7 @@ fun writePriceAndArticleData(article: Article, price: Price) = runBlocking {
         println("writing $article.id")
     }
 
-    // create a new scope
+    // createTodo a new scope
     coroutineScope {
         delay(500)
         println("writing price $price")

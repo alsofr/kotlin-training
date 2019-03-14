@@ -1,18 +1,28 @@
 package com.freiheit.trainings.kotlin.scoping
 
-import com.freiheit.trainings.kotlin.challenge.Cart
 
-interface Service {
-    fun fetchArticles(cart: Cart): Cart
-    fun fetchPrices(cart: Cart): Cart
-    fun addItem(cart: Cart, id: String, quantity: Int): Cart
-    fun load(): Cart?
-    fun create(): Cart
-    fun save(cart: Cart)
-    fun track(cart: Cart)
+data class Todo(val description: String, val assignee: User) {
+    fun setDescription(description: String): Todo = copy(description = description)
+    fun assign(user: User): Todo = copy(assignee = user)
 }
 
-class Logic(private val service: Service) {
+data class User(val subscriptionType: SubscriptionType)
+
+enum class SubscriptionType {
+    NORMAL, PREMIUM
+}
+
+interface TodoService {
+    fun fetchUserData(): User
+    fun setDescription(todo: Todo, description: String): Todo
+    fun setAssignee(todo: Todo, assignee: User): Todo
+    fun loadTodo(): Todo?
+    fun createTodo(): Todo
+    fun save(todo: Todo)
+    fun track(todo: Todo)
+}
+
+class Logic(private val service: TodoService) {
 
     /**
      * @DONT Write machine code
@@ -25,17 +35,17 @@ class Logic(private val service: Service) {
      *     - pollute autocompletion
      *     - easily mixed up
      */
-    fun processC(id: String, quantity: Int): Cart? {
-        var cart = service.load()
-        if (cart == null) {
-            cart = service.create()
+    fun processC(description: String): Todo {
+        var todo = service.loadTodo()
+        if (todo == null) {
+            todo = service.createTodo()
         }
-        val withItem = service.addItem(cart, id, quantity)
-        val withUpdatedItems = service.fetchArticles(withItem)
-        val withPrices = service.fetchPrices(withUpdatedItems)
-        service.save(withPrices)
-        service.track(withPrices)
-        return withPrices
+        val withDescription = service.setDescription(todo, description)
+        val user = service.fetchUserData()
+        val assignedTodo = service.setAssignee(withDescription, user)
+        service.save(assignedTodo)
+        service.track(assignedTodo)
+        return assignedTodo
     }
 
 
@@ -48,11 +58,11 @@ class Logic(private val service: Service) {
      * - hard to read
      * - indentation gets ugly once the line is long enough
      */
-    fun processLisp(id: String, quantity: Int): Cart {
-        val cart = service.fetchPrices(service.fetchArticles(service.addItem(service.load() ?: service.create(), id, quantity)))
-        service.save(cart)
-        service.track(cart)
-        return cart
+    fun processLisp(description: String): Todo {
+        val todo = service.setAssignee(service.setDescription(service.loadTodo() ?: service.createTodo(), description), service.fetchUserData())
+        service.save(todo)
+        service.track(todo)
+        return todo
     }
 
 
@@ -63,8 +73,8 @@ class Logic(private val service: Service) {
             - returns result
          */
 
-        val halloWelt = "Hallo,".let {
-            "$it Welt!"
+        val withDesciption = service.loadTodo()?.let {
+            service.setDescription(it, "description")
         }
 
         /* .also {}
@@ -73,7 +83,9 @@ class Logic(private val service: Service) {
             - handy for side-effects
          */
 
-        val stillHalloWelt = halloWelt.also { print(it) }
+        val trackedTodo = service.createTodo().also {
+            service.track(it)
+        }
 
         /* .run {}
             - pipe-/map-like
@@ -81,8 +93,9 @@ class Logic(private val service: Service) {
             - returns result
          */
 
-        val reversedCartId = Cart().run {
-            cartId.reversed()
+        val assignedTodo = service.createTodo().run {
+            setDescription("description")
+            assign(service.fetchUserData())
         }
 
         /* .apply {}
@@ -90,9 +103,8 @@ class Logic(private val service: Service) {
             - returns operand
             - handy for assignments
          */
-        val cartWithData = Cart().apply {
-            items = mapOf("id" to Cart.Item("id", 42, null))
-            price = Cart.Price("EUR", 69.toBigDecimal())
+        val todo = service.loadTodo()?.apply {
+            print(description)
         }
 
         /* with(context) {}
@@ -104,7 +116,7 @@ class Logic(private val service: Service) {
                 - with() {} uses an object to execute operations and return
          */
         with(service) {
-            fetchPrices(create())
+            loadTodo() ?: createTodo()
         }
 
     }
@@ -118,11 +130,10 @@ class Logic(private val service: Service) {
      * + functional style
      * - boilerplate
      */
-    fun processScoping(id: String, quantity: Int): Cart {
-        return (service.load() ?: service.create())
-            .let { service.addItem(it, id, quantity) }
-            .run { service.fetchArticles(this) }
-            .let { service.fetchPrices(it) }
+    fun processScoping(description: String): Todo {
+        return (service.loadTodo() ?: service.createTodo())
+            .let { service.setDescription(it, description) }
+            .run { service.setAssignee(this, service.fetchUserData()) }
             .also { service.save(it) }
             .also { service.track(it) }
     }
@@ -131,13 +142,16 @@ class Logic(private val service: Service) {
      * @DONT Nest scoping functions. If something has to be used multiple times independently,
      *       just declare an old-school variable.
      */
-    fun processNestedScope(id: String, quantity: Int) {
-        service.load()
-            .let { it ?: service.create() }
-            .let { cart ->
-                service.addItem(cart, id, quantity)
-                    .let { service.fetchArticles(it) }
-                    .let { service.fetchPrices(cart) }
+    fun processNestedScope(description: String) {
+        service.loadTodo()
+            .let { it ?: service.createTodo() }
+            .let { todo ->
+                service.setDescription(todo, description)
+                    .let {
+                        service.fetchUserData()
+                            .run { it.assign(this) }
+                    }
+                    .also { service.track(it) }
             }
     }
 
@@ -155,9 +169,11 @@ class Logic(private val service: Service) {
      * + functional style
      * + no boilerplate
      */
-    fun processWithContext(service: Service, id: String, quantity: Int) = with(service) {
-        addItem(load() ?: create(), id, quantity)
-            .let { fetchPrices(fetchArticles(it)) }
+    fun processWithContext(service: TodoService, description: String) = with(service) {
+        val todo = loadTodo() ?: createTodo()
+
+        return@with setDescription(todo, description)
+            .let { setAssignee(it, fetchUserData()) }
             .also {
                 save(it)
                 track(it)

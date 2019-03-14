@@ -1,4 +1,6 @@
-package com.freiheit.trainings.kotlin.syntax
+package com.freiheit.trainings.kotlin.inline
+
+import kotlinx.coroutines.delay
 
 /**
  * Inline functions are compiled directly into the caller location
@@ -14,7 +16,13 @@ inline fun measure(block: () -> Unit): Long {
     return System.currentTimeMillis() - start
 }
 
-private fun bar() {
-    val duration = measure { repeat(9001) { print(it)} }
+object Todo
+
+suspend fun indexTodo(todo: Todo) = delay(50)
+
+private suspend fun indexAllTodos(todoList: List<Todo>) {
+    val duration = measure {
+        todoList.forEach { indexTodo(it) }
+    }
     println(duration)
 }

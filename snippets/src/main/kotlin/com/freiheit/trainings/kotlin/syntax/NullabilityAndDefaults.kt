@@ -4,7 +4,7 @@ package com.freiheit.trainings.kotlin.syntax
  * Kotlin has default values for functions and ctors. It als supports named parameters <3.
  *
  * @DONT: Define defaults, because you can. It get's hard to understand why something is working out of the box.
- * @DONT Do not create default instances of "complex" components such as services or DAOs. These components usually
+ * @DONT Do not createTodo default instances of "complex" components such as services or DAOs. These components usually
  * handle a lot of work, do the heavy lifting and as such may be the source of many bugs. Make their creation, their
  * existence, as explicit as possible.
  *
@@ -44,7 +44,7 @@ fun workingWithNulls() {
         println("isNullOrEmpty is an extension: CharSequence?.isNullOrEmpty()")
     }
 
-    // create an instance without new
+    // createTodo an instance without new
     val searchParameter = SearchParameter(title = "Coffee Makers <3", dept = Dept("Bean makers", subDept = null))
 
     val name = searchParameter.dept?.name
