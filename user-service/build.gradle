@@ -49,7 +49,7 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-mainClassName = "com.freiheit.fista.user.MainKt"
+mainClassName = "com.freiheit.trainings.user.MainKt"
 sourceCompatibility = 1.8
 project.version = "0.0.1"
 

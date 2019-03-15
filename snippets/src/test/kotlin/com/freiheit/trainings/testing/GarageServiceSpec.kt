@@ -36,11 +36,11 @@ val testUser2 = User(userId = testUserId2)
 const val testVehicleId1 = "1"
 const val testVehicleId2 = "2"
 
-val testVehicle1 = Vehicle(vehicleId = testVehicleId1)
-val testVehicle2 = Vehicle(vehicleId = testVehicleId2)
+val testVehicle1 = ToDo(vehicleId = testVehicleId1)
+val testVehicle2 = ToDo(vehicleId = testVehicleId2)
 
-val testGarage1 = Garage(user = testUser1, vehicles = listOf(testVehicle1, testVehicle2))
-val testGarage2 = Garage(user = testUser2, vehicles = listOf(testVehicle1, testVehicle2))
+val testGarage1 = Garage(user = testUser1, toDos = listOf(testVehicle1, testVehicle2))
+val testGarage2 = Garage(user = testUser2, toDos = listOf(testVehicle1, testVehicle2))
 
 object GarageSpek : Spek({
     given("A garage service") {
@@ -48,9 +48,9 @@ object GarageSpek : Spek({
         //NOTICE: Mockk is strict, i.e., per default a method has to be mocked if called.
 //        val userDao = mockk<UserDao>(relaxed = true)
 //        val userDao = mockk<UserDao>(relaxUnitFun= true)
-        val vehicleDao = mockk<VehicleDao>()
+        val vehicleDao = mockk<ToDoDao>()
 
-        val garageService = GarageService(userDao = userDao, vehicleDao = vehicleDao)
+        val garageService = ToDoService(userDao = userDao, toDoDao = vehicleDao)
 
         // @DO: reuse mocks! Otherwise your test may get very slow.
         // see https://www.youtube.com/watch?v=RX_g65J14H0&feature=youtu.be&t=940
@@ -91,7 +91,7 @@ object GarageSpek : Spek({
             it("should call the dao with correct parameters") {
                 val slot = slot<String>()
                 every {
-                    userDao.readUser(userId = capture(slot))
+                    userDao.readUser(id = capture(slot))
                 } returns testUser1
 
                 every {

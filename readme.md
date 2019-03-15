@@ -18,8 +18,11 @@ Summarizing, this project demonstrates the usage of Kotlin, Coroutines and Event
 it has two little services communicating with each other, it is also a micro-service project.
 
 # Who is the audience?
-It has been built for [FISTA 2019](https://fista.iscte-iul.pt/). So, all students attending the workshop
-are the primary audience.
+Everybody who wants to learn Kotlin.
+
+# Structure
+Folder [snippets]() contains code examples. These examples are the foundation.
+Folder [todo-service]() contains the ToDo service whereas folder [user-service]() contains the User service.
 
 # Build and run the project
 The project is build using Gradle. 
@@ -31,7 +34,6 @@ Build and run the todo-service
 `./gradlew todo-service:formatKotlin todo-service:clean todo-service:build`
 
 There are also some helper scripts `build-and-run-todo-service.sh` and `build-and-run-todo-service.sh`.
-
 
 # Exercises
 The exercises can be found in file [exercises.md]().

@@ -1,0 +1,3 @@
+/home/tim/projects/trainings/kotlin-training/snippets/src/test/kotlin/com/freiheit/trainings/testing/GarageServiceSpec.kt
+/home/tim/projects/trainings/kotlin-training/snippets/src/test/kotlin/com/freiheit/trainings/testing/VerificationOrderSpec.kt
+/home/tim/projects/trainings/kotlin-training/snippets/src/test/kotlin/com/freiheit/trainings/kotlin/challenge/ServiceSpec.kt
