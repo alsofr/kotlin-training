@@ -1,8 +1,10 @@
 package com.freiheit.trainings.testing
 
 data class UserId(val id: String)
+data class ToDoId(val id: String)
+
 data class User(val id: UserId)
-data class ToDo(val id: String, val note: String, val userId: UserId)
+data class ToDo(val id: ToDoId, val note: String, val userId: UserId)
 
 class UserDao {
     private val db: MutableMap<String, User> = mutableMapOf()

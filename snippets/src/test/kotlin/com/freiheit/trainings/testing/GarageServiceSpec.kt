@@ -28,81 +28,80 @@ import kotlin.test.assertEquals
  * This example uses Spek (https://github.com/spekframework) (AFIK it is also maintained by Jetbrains). It is inspired
  * by test frameworks like Jasmine and RSpec.
  */
-const val testUserId1 = "471142"
-const val testUserId2 = "0471142"
-val testUser1 = User(userId = testUserId1)
-val testUser2 = User(userId = testUserId2)
-
-const val testVehicleId1 = "1"
-const val testVehicleId2 = "2"
-
-val testVehicle1 = ToDo(vehicleId = testVehicleId1)
-val testVehicle2 = ToDo(vehicleId = testVehicleId2)
-
-val testGarage1 = Garage(user = testUser1, toDos = listOf(testVehicle1, testVehicle2))
-val testGarage2 = Garage(user = testUser2, toDos = listOf(testVehicle1, testVehicle2))
-
 object GarageSpek : Spek({
+    val idDaisy = UserId(id = "Daisy")
+    val idDonald = UserId(id = "Donald")
+
+    val daisy = User(id = idDaisy)
+    val donald = User(id = idDonald)
+
+    val goToSupermarket = ToDo(id = ToDoId("todo_1"), note = "buyinglist...", userId = idDaisy)
+    val cleanTheToilet = ToDo(id = ToDoId("todo_2"), note = "Do not forget to also clean the mirror", userId = idDonald)
+
     given("A garage service") {
         val userDao = mockk<UserDao>()
         //NOTICE: Mockk is strict, i.e., per default a method has to be mocked if called.
-//        val userDao = mockk<UserDao>(relaxed = true)
-//        val userDao = mockk<UserDao>(relaxUnitFun= true)
-        val vehicleDao = mockk<ToDoDao>()
+        //val userDao = mockk<UserDao>(relaxed = true)
+        //val userDao = mockk<UserDao>(relaxUnitFun= true)
 
-        val garageService = ToDoService(userDao = userDao, toDoDao = vehicleDao)
+        val toDoDao = mockk<ToDoDao>()
+        val toDoService = ToDoService(userDao = userDao, toDoDao = toDoDao)
 
-        // @DO: reuse mocks! Otherwise your test may get very slow.
-        // see https://www.youtube.com/watch?v=RX_g65J14H0&feature=youtu.be&t=940
+        /**
+         * @DO: reuse mocks! Otherwise your test may get very slow.
+         * see https://www.youtube.com/watch?v=RX_g65J14H0&feature=youtu.be&t=940
+         *
+         */
         beforeEachTest {
-            clearMocks(userDao, vehicleDao)
+            clearMocks(userDao, toDoDao)
         }
 
-        context("read garage") {
-            it("should return a garage") {
+        context("read ToDos") {
+            it("should return Daisy's ToDos") {
                 every {
-                    userDao.readUser(any())
-                } returns testUser1
+                    userDao.readUser(idDaisy)
+                } returns daisy
 
                 every {
-                    vehicleDao.readVehicles(any())
-                } returns listOf(testVehicle1, testVehicle2)
+                    toDoDao.read(idDaisy)
+                } returns setOf(goToSupermarket, cleanTheToilet)
 
-                assertEquals(garageService.readGarage(testUserId1), testGarage1)
+                assertEquals(toDoService.readToDos(idDaisy), MyToDos(daisy, setOf(goToSupermarket, cleanTheToilet)))
             }
 
             // Matching
-            it("should return a garage for certain users only") {
+            it("should return todos for certain users only") {
                 // list of matchers
                 // https://github.com/mockk/mockk#matchers
 
                 every {
-                    userDao.readUser(match { it.startsWith("0") })
-                } returns testUser2
+                    userDao.readUser(match { it.id.startsWith("Do") })
+                } returns donald
 
                 every {
-                    vehicleDao.readVehicles(any())
-                } returns listOf(testVehicle1, testVehicle2)
+                    toDoDao.read(any())
+                } returns setOf(cleanTheToilet)
 
-                assertEquals(garageService.readGarage(testUserId2), testGarage2)
+                assertEquals(toDoService.readToDos(idDonald), MyToDos(donald, setOf(cleanTheToilet)))
             }
 
             // Capturing
             it("should call the dao with correct parameters") {
-                val slot = slot<String>()
+                val slot = slot<UserId>()
                 every {
-                    userDao.readUser(id = capture(slot))
-                } returns testUser1
+                    userDao.readUser(userId = capture(slot))
+                } returns daisy
 
                 every {
-                    vehicleDao.readVehicles(any())
-                } returns listOf(testVehicle1, testVehicle2)
+                    toDoDao.read(any())
+                } returns setOf(goToSupermarket, cleanTheToilet)
 
 
-//                garageService.readGarage(userId = "test1")
-                garageService.readGarage(userId = "test2")
-                verify(exactly = 2) { garageService.readGarage(userId =
-                or("test1", "test2")) }
+                toDoService.readToDos(userId = idDaisy)
+                toDoService.readToDos(userId = idDonald)
+                verify(exactly = 2) {
+                    userDao.readUser(userId = or(idDaisy, idDonald))
+                }
             }
         }
 
