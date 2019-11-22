@@ -22,16 +22,11 @@ fun getDescriptionLengthLimit(userType: String, specialOfferDays: Boolean): Int 
  *
  * @DO Use [sealed] classes for state modelling
  */
-sealed class Todo {
-    object Blank : Todo()
-    sealed class Created : Todo() {
-        abstract val assignee: String
-        abstract val description: String
+sealed class Todo
+object Blank: Todo()
+data class InProgress(val assignee: String, val description: String): Todo()
+data class Completed(val assignee: String, val description: String): Todo()
 
-        data class InProgress(override val assignee: String, override val description: String) : Created()
-        data class Completed(override val assignee: String, override val description: String) : Created()
-    }
-}
 
 object OtherScope {
 //    "Inheritance from sealed classes is restricted to the scope!"
@@ -55,11 +50,11 @@ object OtherScope {
  */
 private fun assign(todo: Todo, assignee: String): Todo {
     return when (todo) {
-        Todo.Blank -> throw IllegalStateException()                 // match by reference
-        is Todo.Created.InProgress -> {                             // match by type
+        Blank -> throw IllegalStateException()                 // match by reference
+        is InProgress -> {                             // match by type
            todo.copy(assignee = assignee)                           // smart-cast
         }
-        is Todo.Created.Completed -> throw IllegalStateException()  //The when expression on sealed types has to be exhaustive!
+        is Completed -> throw IllegalStateException()  //The when expression on sealed types has to be exhaustive!
     }
 }
 
@@ -71,11 +66,11 @@ private fun assign(todo: Todo, assignee: String): Todo {
  * @DONT Use the [as] keyword, especially without making the result optional
  */
 private fun getDescription(todo: Todo): String {
-    (todo as? Todo.Created.InProgress)?.description // Does something if value could be casted
+    (todo as? InProgress)?.description // Does something if value could be casted
 
-    (todo as Todo.Created.Completed).description    // This can throw!
+    (todo as Completed).description    // This can throw!
 
-    return if (todo is Todo.Created) {
+    return if (todo is InProgress || todo is Completed) {
         todo.description
     } else {
         throw IllegalArgumentException()
