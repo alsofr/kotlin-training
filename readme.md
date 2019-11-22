@@ -1,9 +1,9 @@
 # Why this project?
-This project is used for trainings and workshops and moreover is is a take away! Something that 
+This project is used for trainings and workshops and moreover is a take away! Something that 
 can be used to work on after the workshop.
 
 It contains two independent Kotlin projects. One project implements a user-service, which 
-is the external backend service. The other project implements a todo-service. T
+is the external backend service. The other project implements a todo-service.
 
 The user-service has a GRPC and a REST interface (for demonstration purposes). Both services 
 use [Ktor](http://ktor.io). In addition, the user-service uses a custom implementation to link 
@@ -21,8 +21,8 @@ it has two little services communicating with each other, it is also a micro-ser
 Everybody who wants to learn Kotlin.
 
 # Structure
-Folder [snippets]() contains code examples. These examples are the foundation.
-Folder [todo-service]() contains the ToDo service whereas folder [user-service]() contains the User service.
+Folder [snippets](/snippets) contains code examples. These examples are the foundation.
+Folder [todo-service](/todo-service) contains the ToDo service whereas folder [user-service](/user-service) contains the User service.
 
 # Build and run the project
 The project is build using Gradle. 
@@ -36,4 +36,4 @@ Build and run the todo-service
 There are also some helper scripts `build-and-run-todo-service.sh` and `build-and-run-todo-service.sh`.
 
 # Exercises
-The exercises can be found in file [exercises.md]().
+The exercises can be found in file [exercises.md](/exercises.md).
